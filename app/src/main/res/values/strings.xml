@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TheNext</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="yue">岳</string>
+    <string name="yun">云</string>
+    <string name="peng">鹏</string>
+    <string name="xiang">相</string>
+    <string name="sheng">声</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="yueyunpengxiangsheng">岳云鹏相声</string>
+    <string name="huiyilidenagere">回忆里的那个人</string>
+    <string name="buyaoshuohua">不要说话</string>
+</resources>
