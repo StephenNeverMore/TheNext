@@ -3,9 +3,12 @@ package com.stephen.thenext.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -78,6 +81,16 @@ public class ListFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
 
+        if (this.isHidden()) {
+            Log.d(TAG, "onHiddenChanged  is true");
+        } else {
+            startAnimations();
+        }
+    }
+
+    private void startAnimations() {
+        LayoutAnimationController lac = new LayoutAnimationController(AnimationUtils.loadAnimation(getActivity(), R.anim.translate_in));
+        listView.setLayoutAnimation(lac);
     }
 
     public void refreshCheckedItem(int checked) {
