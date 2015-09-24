@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.stephen.thenext.R;
 import com.stephen.thenext.fragment.ListFragment;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**

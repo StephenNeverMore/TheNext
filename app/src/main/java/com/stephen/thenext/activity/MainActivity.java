@@ -1,9 +1,9 @@
 package com.stephen.thenext.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,17 +15,28 @@ import android.widget.TextView;
 import com.stephen.thenext.R;
 import com.stephen.thenext.fragment.ListFragment;
 import com.stephen.thenext.fragment.RotateFragment;
+import com.stephen.thenext.polly.Bean;
 
 import cn.waps.AppConnect;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "Stephen";
+    private static boolean isMediaPlaying = false;
 
-    private Button settingbtn, infobtn, playbtn, leftbtn, rightbtn, loopbtn, listbtn;
-    private TextView currentMusicName, currentMusicDur, totalMusicDur;
+    private Button settingbtn;
+    private Button infobtn;
+    private Button playbtn;
+    private Button leftbtn;
+    private Button rightbtn;
+    private Button loopbtn;
+    private Button listbtn;
+    private TextView currentMusicName;
+    private TextView currentMusicDur;
+    private TextView totalMusicDur;
     private SeekBar seekBar;
-    private RotateFragment rotateFragment;
+    private static RotateFragment rotateFragment;
     private ListFragment listFragment;
 
     private static final String APP_ID = "294ee87c3a15e377423307a747fe9476";
@@ -47,16 +58,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         initFragments();
         initViews();
-        SharedPreferences preferences = this.getSharedPreferences("save", MODE_PRIVATE);
-        int test = preferences.getInt(listFragment.CURRENTPOS, 500);
-        listFragment.currentPos = test;
+        SharedPreferences preferences = this.getSharedPreferences("save", Context.MODE_PRIVATE);
+        ListFragment.currentPos = preferences.getInt(ListFragment.CURRENTPOS, 0);
+
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences sharedPreferences = this.getSharedPreferences("save", MODE_PRIVATE);
-        sharedPreferences.edit().putInt(listFragment.CURRENTPOS, listFragment.currentPos).commit();
+        SharedPreferences sharedPreferences = this.getSharedPreferences("save", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putInt(ListFragment.CURRENTPOS, ListFragment.currentPos).apply();
     }
 
     @Override
@@ -108,16 +120,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 switchFragment();
                 break;
             case R.id.play_pause_btn:
-                rotateFragment.startRotate();
+                updatePlay();
+                updateTitle();
                 break;
             case R.id.settingbtn:
-                rotateFragment.stopRotate();
                 break;
             case R.id.right_btn:
-                listFragment.refreshCheckedItem(listFragment.currentPos + 1);
+                if (isMediaPlaying){
+                    listFragment.refreshCheckedItem(ListFragment.currentPos + 1);
+                }
+                updateTitle();
                 break;
             case R.id.left_btn:
-                listFragment.refreshCheckedItem(listFragment.currentPos - 1);
+                if (isMediaPlaying){
+                    listFragment.refreshCheckedItem(ListFragment.currentPos - 1);
+                }
+                updateTitle();
                 break;
             default:
                 break;
@@ -141,13 +159,38 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private void switchFragment() {
 
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.fragment_alpha_in, R.anim.fragment_alpha_out);
         if (isRotatoFragShowing) {
-            getSupportFragmentManager().beginTransaction().show(listFragment).hide(rotateFragment).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.fragment_translate_in, R.anim.fragment_translate_out)
+                    .show(listFragment).hide(rotateFragment).commit();
         } else {
-            getSupportFragmentManager().beginTransaction().show(rotateFragment).hide(listFragment).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.fragment_translate_in, R.anim.fragment_translate_out)
+                    .show(rotateFragment).hide(listFragment).commit();
         }
         isRotatoFragShowing = !isRotatoFragShowing;
+    }
+
+    public void updateTitle() {
+//        currentMusicName.setText(ListFragment.beanLists.get(ListFragment.currentPos).getName());
+        currentMusicName.setText(listFragment.playlists.get(ListFragment.currentPos));
+    }
+
+    public void updatePlay() {
+        if (!isMediaPlaying) {
+            playbtn.setBackgroundResource(R.drawable.pausebtn_xml);
+            rotateFragment.startRotate();
+        } else {
+            playbtn.setBackgroundResource(R.drawable.playbtn_xml);
+            rotateFragment.stopRotate();
+        }
+        isMediaPlaying = !isMediaPlaying;
+    }
+
+    private void onEventMainThread(Bean bean) {
+        Log.d(TAG, "onEventMainThread");
+        isMediaPlaying = bean.isSelected();
+        updatePlay();
+        updateTitle();
     }
 }

@@ -45,7 +45,7 @@ public class WelActivity extends Activity {
             final TextView textView = (TextView) findViewById(res[i]);
             ObjectAnimator animator = ObjectAnimator.ofFloat(textView, "translationY", -2000, 0);
             animator.setDuration(800);
-            animator.setStartDelay(30 * i);
+            animator.setStartDelay(60 * i);
             animator.setInterpolator(new AnticipateOvershootInterpolator());
             animator.addListener(new Animator.AnimatorListener() {
                 @Override
