@@ -56,7 +56,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         SharedPreferences sharedPreferences = this.getSharedPreferences("save", MODE_PRIVATE);
-        sharedPreferences.edit().putInt(listFragment.CURRENTPOS, listFragment.currentPos).commit();
+        sharedPreferences.edit().putInt(listFragment.CURRENTPOS, listFragment.currentPos).apply();
     }
 
     @Override
@@ -115,9 +115,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 break;
             case R.id.right_btn:
                 listFragment.refreshCheckedItem(listFragment.currentPos + 1);
+                refreshTextViews();
                 break;
             case R.id.left_btn:
                 listFragment.refreshCheckedItem(listFragment.currentPos - 1);
+                refreshTextViews();
                 break;
             default:
                 break;
@@ -150,4 +152,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
         isRotatoFragShowing = !isRotatoFragShowing;
     }
+
+    private void refreshTextViews() {
+        currentMusicName.setText(listFragment.beanLists.get(listFragment.currentPos).getName());
+    }
+
 }

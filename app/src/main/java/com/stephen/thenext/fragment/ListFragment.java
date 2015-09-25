@@ -53,6 +53,7 @@ public class ListFragment extends Fragment {
             playlists.add("TEST" + i);
             Bean bean = new Bean();
             bean.setBeanId(i);
+            bean.setName(playlists.get(i));
             if (currentPos == i) {
                 bean.setIsSelected(true);
             } else {
