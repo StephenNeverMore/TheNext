@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#777777"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -24,7 +25,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/settings" />
+            android:background="@drawable/settingbtn_xml" />
 
         <TextView
             android:id="@+id/currentPlay"
@@ -40,7 +41,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/info" />
+            android:background="@drawable/infobtn_xml" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -63,6 +64,7 @@
 
         <Button
             android:id="@+id/loopbtn"
+            android:visibility="invisible"
             android:layout_width="35dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
@@ -74,7 +76,7 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/play" />
+            android:background="@drawable/playbtn_xml" />
 
         <Button
             android:id="@+id/left_btn"
@@ -83,7 +85,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:layout_toLeftOf="@+id/play_pause_btn"
-            android:background="@drawable/previous" />
+            android:background="@drawable/previousbtn_xml" />
 
         <Button
             android:id="@+id/right_btn"
@@ -92,7 +94,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/play_pause_btn"
-            android:background="@drawable/next" />
+            android:background="@drawable/nextbtn_xml" />
 
         <Button
             android:id="@+id/list_btn"
@@ -101,7 +103,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:background="@drawable/playlist" />
+            android:background="@drawable/playlistbtn_xml" />
 
     </RelativeLayout>
 

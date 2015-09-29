@@ -8,6 +8,15 @@ public class Bean {
     private boolean isSelected;
     private String name;
 
+    public Bean(int beanId, boolean isSelected, String name) {
+        this.beanId = beanId;
+        this.isSelected = isSelected;
+        this.name = name;
+    }
+
+    public Bean() {
+    }
+
     public int getBeanId() {
         return beanId;
     }

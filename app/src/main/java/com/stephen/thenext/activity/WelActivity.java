@@ -15,12 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.stephen.thenext.R;
+import com.umeng.analytics.MobclickAgent;
 
 
 public class WelActivity extends Activity {
 
     private int[] res = new int[]{R.id.peng_tv, R.id.yun_tv, R.id.xiang_tv, R.id.yue_tv, R.id.sheng_tv};
-//    private RelativeLayout relativeLayout;
+
+    //    private RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +41,25 @@ public class WelActivity extends Activity {
         }, 2500);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     private void intiViews() {
 //        relativeLayout = (RelativeLayout) findViewById(R.id.wel_layout);
         for (int i = 0; i < res.length; i++) {
             final TextView textView = (TextView) findViewById(res[i]);
             ObjectAnimator animator = ObjectAnimator.ofFloat(textView, "translationY", -2000, 0);
             animator.setDuration(800);
-            animator.setStartDelay(30 * i);
+            animator.setStartDelay(60 * i);
             animator.setInterpolator(new AnticipateOvershootInterpolator());
             animator.addListener(new Animator.AnimatorListener() {
                 @Override

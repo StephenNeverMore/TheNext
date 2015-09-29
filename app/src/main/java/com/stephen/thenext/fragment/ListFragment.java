@@ -13,24 +13,29 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.stephen.thenext.R;
+import com.stephen.thenext.activity.MainActivity;
 import com.stephen.thenext.adpater.MyAdapter;
 import com.stephen.thenext.polly.Bean;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by Stephen on 2015-08-22.
  */
 public class ListFragment extends Fragment {
 
-    private String TAG = "Stephen";
+    private static String TAG = "Stephen";
     private ListView listView;
     public List<String> playlists;
     public static int currentPos = 0;
     public static final String CURRENTPOS = "CURRENTPOS";
     public static List<Bean> beanLists;
-    private MyAdapter myAdapter;
+    public static int[] res = new int[]{R.raw.haojiubujian, R.raw.taixiangai, R.raw.youqingsuiyue};
+    private int[] names = new int[]{R.string.haojiubujian, R.string.taixiangai, R.string.youqingsuiyue};
+    private static MyAdapter myAdapter;
 
     @Nullable
     @Override
@@ -49,8 +54,8 @@ public class ListFragment extends Fragment {
 
         playlists = new ArrayList<>();
         beanLists = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            playlists.add("TEST" + i);
+        for (int i = 0; i < names.length; i++) {
+            playlists.add(getString(names[i]));
             Bean bean = new Bean();
             bean.setBeanId(i);
             bean.setName(playlists.get(i));
@@ -63,7 +68,7 @@ public class ListFragment extends Fragment {
         }
 
         listView = (ListView) getActivity().findViewById(R.id.list);
-        listView.setDividerHeight(3);
+        listView.setDividerHeight(5);
         myAdapter = new MyAdapter(getActivity(), playlists);
         listView.setAdapter(myAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,6 +78,7 @@ public class ListFragment extends Fragment {
                     return;
                 }
                 refreshCheckedItem(position);
+                EventBus.getDefault().post(new Bean(0, true, null));
             }
         });
     }
@@ -95,14 +101,16 @@ public class ListFragment extends Fragment {
     }
 
     public void refreshCheckedItem(int checked) {
-        if (checked > playlists.size() - 1) {
+        if (checked > res.length) {
             checked = 0;
         } else if (checked < 0) {
-            checked = playlists.size() - 1;
+            checked = res.length - 1;
         }
-        beanLists.get(currentPos).setIsSelected(false);
+        Log.d(TAG, "refreshCheckedItem----------" + checked);
         beanLists.get(checked).setIsSelected(true);
+        beanLists.get(currentPos).setIsSelected(false);
         currentPos = checked;
         myAdapter.notifyDataSetChanged();
+        Log.d(TAG, "refreshCheckedItem----------" + currentPos);
     }
 }
