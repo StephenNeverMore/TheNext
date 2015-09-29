@@ -6,13 +6,14 @@
 
     <View
         android:id="@+id/umeng_fb_reply_item_view_tag"
-        android:layout_width="6dp"
+        android:layout_width="10dp"
         android:layout_height="fill_parent"
         android:background="@color/umeng_fb_lightblue" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/umeng_fb_reply_content"
             android:layout_width="fill_parent"
@@ -20,9 +21,10 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
+            android:gravity="center"
+
             android:paddingRight="10dp"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/umeng_fb_item_content_size" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/umeng_fb_reply_date"
@@ -33,6 +35,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
             android:textColor="@color/umeng_fb_secondary_text_light"
             android:textSize="@dimen/umeng_fb_item_time_size" />
 

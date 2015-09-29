@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:orientation="horizontal">
 
     <View
         android:id="@+id/umeng_fb_reply_item_view_tag"
-        android:layout_width="6dp"
-        android:layout_height="fill_parent"
+        android:layout_width="10dp"
+        android:layout_height="40dp"
         android:background="@color/umeng_fb_lightblue" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="8dp">
 
         <RelativeLayout
             android:id="@+id/umeng_fb_reply_content_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="6dp">
 
             <RelativeLayout
@@ -31,8 +31,8 @@
 
                 <View
                     android:id="@+id/umeng_fb_reply_audio_play_anim"
-                    android:layout_width="11dp"
-                    android:layout_height="17dp"
+                    android:layout_width="15dp"
+                    android:layout_height="22dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:background="@anim/umeng_fb_audio_play_anim" />
@@ -58,6 +58,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
             android:textColor="@color/umeng_fb_secondary_text_light"
             android:textSize="@dimen/umeng_fb_item_time_size" />
 

@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <View
-        android:layout_width="6dp"
+        android:layout_width="10dp"
         android:layout_height="match_parent"
         android:background="@color/umeng_fb_lightblue" />
 
@@ -22,7 +22,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:text="@string/umeng_fb_reply_content_default"
             android:textSize="@dimen/umeng_fb_item_content_size" />
 
