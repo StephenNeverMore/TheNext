@@ -87,10 +87,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-
-        if (this.isHidden()) {
-            Log.d(TAG, "onHiddenChanged  is true");
-        } else {
+        if (!this.isHidden()) {
             startAnimations();
         }
     }

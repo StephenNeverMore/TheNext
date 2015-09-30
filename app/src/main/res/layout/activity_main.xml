@@ -15,6 +15,7 @@
         android:id="@+id/listbtn_settingbtn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/AdLinearLayout"
         android:background="#555555"
         android:paddingLeft="10dp"
@@ -60,7 +61,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="#777777">
+        android:layout_marginBottom="5dp"
+        android:background="#555555">
+        <View
+            android:id="@+id/dividerView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="#000000"/>
 
         <Button
             android:id="@+id/loopbtn"
@@ -110,9 +118,9 @@
     <LinearLayout
         android:id="@+id/seebar_ll"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="35dp"
         android:layout_above="@+id/operator_rl"
-        android:background="#777777"
+        android:background="#555555"
         android:orientation="horizontal">
 
         <TextView

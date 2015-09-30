@@ -29,8 +29,14 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity android:name="com.umeng.fb.ConversationActivity" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/myTransparent" />
 
         <meta-data
             android:name="UMENG_APPKEY"

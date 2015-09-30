@@ -1,5 +1,6 @@
 package com.stephen.thenext.activity;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,8 @@ import com.stephen.thenext.R;
 import com.stephen.thenext.fragment.ListFragment;
 import com.stephen.thenext.fragment.RotateFragment;
 import com.stephen.thenext.polly.Bean;
+import com.stephen.thenext.utils.ToastUtils;
+import com.stephen.thenext.view.InfoDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.ConversationActivity;
 import com.umeng.fb.FeedbackAgent;
@@ -59,8 +62,9 @@ public class MainActivity extends FragmentActivity implements
     private int mediaCurPos;
     private int mediaTotPos;
     SimpleDateFormat format = new SimpleDateFormat("mm:ss");
-
     private FeedbackAgent fb;
+
+    private InfoDialog dialog;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -171,11 +175,10 @@ public class MainActivity extends FragmentActivity implements
                 updateTitle();
                 break;
             case R.id.settingbtn:
-                Intent intent = new Intent();
-                intent.setClass(this, ConversationActivity.class);
-                String id = new FeedbackAgent(this).getDefaultConversation().getId();
-                intent.putExtra(FeedbackFragment.BUNDLE_KEY_CONVERSATION_ID, id);
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
+//                startActivityForResult(intent, 888);
+                overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
                 break;
             case R.id.right_btn:
                 playNextMusic();
@@ -185,9 +188,39 @@ public class MainActivity extends FragmentActivity implements
                 playPreviousMusic();
                 updateTitle();
                 break;
+            case R.id.infobtn:
+                showInfoDialog();
+                break;
             default:
                 break;
         }
+    }
+
+    private void showInfoDialog() {
+        View view = getLayoutInflater().inflate(R.layout.infodialog_layout, null);
+        int dialogWidth = (int) (getWindowManager().getDefaultDisplay().getWidth() * 0.7);
+        int dialogHeight = (int) (getWindowManager().getDefaultDisplay().getHeight() * 0.3);
+        dialog = new InfoDialog(MainActivity.this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.positiveButton:
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, ConversationActivity.class);
+                        String id = new FeedbackAgent(MainActivity.this).getDefaultConversation().getId();
+                        intent.putExtra(FeedbackFragment.BUNDLE_KEY_CONVERSATION_ID, id);
+                        startActivity(intent);
+                        break;
+                    case R.id.negativeButton:
+                        dialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }, dialogWidth, dialogHeight, view, R.style.dialog);
+
+        dialog.show();
     }
 
     private void playPreviousMusic() {
@@ -273,7 +306,6 @@ public class MainActivity extends FragmentActivity implements
 
     private void onEventMainThread(Bean bean) {
         updateTitle();
-//        updatePlayBtn();
         playbtn.setBackgroundResource(R.drawable.pausebtn_xml);
         rotateFragment.startRotate();
         if (isMediaPlaying) {
@@ -289,12 +321,6 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onCompletion(MediaPlayer mp) {
         playNextMusic();
-//        int index = ListFragment.currentPos + 1;
-//        if (index > ListFragment.res.length - 1) {
-//            index = 0;
-//        }
-//        ListFragment.currentPos = index;
-//        listFragment.refreshCheckedItem(ListFragment.currentPos);
     }
 
     private Runnable mRunnable = new Runnable() {
@@ -309,24 +335,21 @@ public class MainActivity extends FragmentActivity implements
 
     private void setUpUmengFeedback() {
         fb = new FeedbackAgent(this);
-        // check if the app developer has replied to the feedback or not.
         fb.sync();
         fb.openAudioFeedback();
         fb.openFeedbackPush();
-//        PushAgent.getInstance(this).setDebugMode(true);
         PushAgent.getInstance(this).enable();
-
-        //fb.setWelcomeInfo();
-        //  fb.setWelcomeInfo("Welcome to use umeng feedback app");
-//        FeedbackPush.getInstance(this).init(true);
-//        PushAgent.getInstance(this).setPushIntentServiceClass(MyPushIntentService.class);
-
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean result = fb.updateUserInfo();
+                fb.updateUserInfo();
             }
         }).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ToastUtils.showShortToast(MainActivity.this, "onActivityResult");
     }
 }
