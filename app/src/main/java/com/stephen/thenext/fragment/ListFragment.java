@@ -103,11 +103,11 @@ public class ListFragment extends Fragment {
         } else if (checked < 0) {
             checked = res.length - 1;
         }
-        Log.d(TAG, "refreshCheckedItem----------" + checked);
+//        Log.d(TAG, "refreshCheckedItem----------" + checked);
         beanLists.get(checked).setIsSelected(true);
         beanLists.get(currentPos).setIsSelected(false);
         currentPos = checked;
         myAdapter.notifyDataSetChanged();
-        Log.d(TAG, "refreshCheckedItem----------" + currentPos);
+//        Log.d(TAG, "refreshCheckedItem----------" + currentPos);
     }
 }

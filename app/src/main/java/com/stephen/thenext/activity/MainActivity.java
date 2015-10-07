@@ -257,19 +257,19 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
-            mediaPlayer.seekTo(progress);
+            if (isMediaPlaying) {
+                mediaPlayer.seekTo(progress);
+            }
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-
         mediaPlayer.pause();
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
         mediaPlayer.start();
     }
 
@@ -288,7 +288,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void updateTitle() {
-        currentMusicName.setText(listFragment.playlists.get(ListFragment.currentPos));
+        currentMusicName.setText("正在播放：" + listFragment.playlists.get(ListFragment.currentPos));
     }
 
     private void updatePlayBtn() {
@@ -321,6 +321,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onCompletion(MediaPlayer mp) {
         playNextMusic();
+        updateTitle();
     }
 
     private Runnable mRunnable = new Runnable() {
