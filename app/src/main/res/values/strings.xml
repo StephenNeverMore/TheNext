@@ -18,5 +18,9 @@
     <string name="dialog_welcome_tv">TESTTESTTESTTESTTESTTESTTESTTEST</string>
     <string name="setting_cancel_tv">取                消</string>
     <string name="title_activity_setting">settingActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="timersetting">定时设置</string>
 
 </resources>

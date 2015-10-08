@@ -29,6 +29,8 @@ import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.fragment.FeedbackFragment;
 import com.umeng.message.PushAgent;
 
+import junit.framework.Test;
+
 import java.text.SimpleDateFormat;
 
 import cn.waps.AppConnect;
@@ -116,16 +118,20 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
         SharedPreferences sharedPreferences = this.getSharedPreferences("save", Context.MODE_PRIVATE);
         sharedPreferences.edit().putInt(ListFragment.CURRENTPOS, ListFragment.currentPos).apply();
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         AppConnect.getInstance(this).close();
+        if (mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 
 
@@ -146,7 +152,7 @@ public class MainActivity extends FragmentActivity implements
         playbtn = (Button) findViewById(R.id.play_pause_btn);
         leftbtn = (Button) findViewById(R.id.left_btn);
         rightbtn = (Button) findViewById(R.id.right_btn);
-        loopbtn = (Button) findViewById(R.id.loopbtn);
+        loopbtn = (Button) findViewById(R.id.sharebtn);
         listbtn = (Button) findViewById(R.id.list_btn);
         currentMusicName = (TextView) findViewById(R.id.currentPlay);
         currentMusicDur = (TextView) findViewById(R.id.currentTime_tv);
@@ -176,9 +182,8 @@ public class MainActivity extends FragmentActivity implements
                 break;
             case R.id.settingbtn:
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
-//                startActivityForResult(intent, 888);
-                overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+                startActivityForResult(intent, 888);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
             case R.id.right_btn:
                 playNextMusic();
@@ -190,6 +195,9 @@ public class MainActivity extends FragmentActivity implements
                 break;
             case R.id.infobtn:
                 showInfoDialog();
+                break;
+            case R.id.sharebtn:
+                ToastUtils.showShortToast(this, "Pertend to have done");
                 break;
             default:
                 break;
@@ -205,6 +213,7 @@ public class MainActivity extends FragmentActivity implements
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.positiveButton:
+                        dialog.dismiss();
                         Intent intent = new Intent();
                         intent.setClass(MainActivity.this, ConversationActivity.class);
                         String id = new FeedbackAgent(MainActivity.this).getDefaultConversation().getId();
@@ -257,9 +266,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
-            if (isMediaPlaying) {
-                mediaPlayer.seekTo(progress);
-            }
+            mediaPlayer.seekTo(progress);
         }
     }
 
@@ -351,6 +358,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ToastUtils.showShortToast(MainActivity.this, "onActivityResult");
+        int time = data.getIntExtra("com.stephen.thenext.result", 0);
+        ToastUtils.showShortToast(MainActivity.this, "onActivityResult:" + time);
     }
 }

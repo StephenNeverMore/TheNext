@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/AdLinearLayout"
-        android:layout_marginTop="5dp"
         android:background="#555555"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
@@ -30,7 +29,7 @@
 
         <TextView
             android:id="@+id/currentPlay"
-            android:layout_width="120dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:ellipsize="marquee"
@@ -66,9 +65,8 @@
     <RelativeLayout
         android:id="@+id/operator_rl"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
         android:background="#555555">
 
         <View
@@ -76,16 +74,16 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentTop="true"
-            android:background="#000000" />
+            android:background="#898989" />
 
         <Button
-            android:id="@+id/loopbtn"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
+            android:id="@+id/sharebtn"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
             android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/loop"
-            android:visibility="invisible" />
+            android:background="@drawable/sharebtn_xml" />
 
         <Button
             android:id="@+id/play_pause_btn"
