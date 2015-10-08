@@ -131,7 +131,8 @@ public class SettingActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     Intent intent = new Intent();
-                    intent.putExtra("com.stephen.thenext.result", result * 1000 * 60);
+//                    intent.putExtra("com.stephen.thenext.result", result * 1000 * 60);
+                    intent.putExtra("com.stephen.thenext.result", result * 1000);
                     setResult(888, intent);
                     finish();
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);

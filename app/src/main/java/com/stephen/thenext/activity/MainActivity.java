@@ -128,7 +128,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onDestroy() {
         super.onDestroy();
         AppConnect.getInstance(this).close();
-        if (mediaPlayer != null){
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
         }
@@ -295,7 +295,11 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void updateTitle() {
-        currentMusicName.setText("正在播放：" + listFragment.playlists.get(ListFragment.currentPos));
+        if (isMediaPlaying) {
+            currentMusicName.setText("正在播放：" + listFragment.playlists.get(ListFragment.currentPos));
+        } else {
+            currentMusicName.setText("岳云鹏相声");
+        }
     }
 
     private void updatePlayBtn() {
@@ -360,5 +364,36 @@ public class MainActivity extends FragmentActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         int time = data.getIntExtra("com.stephen.thenext.result", 0);
         ToastUtils.showShortToast(MainActivity.this, "onActivityResult:" + time);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (isMediaPlaying){
+//                    mediaPlayer.pause();
+//                    rotateFragment.stopRotate();
+//                    playbtn.setBackgroundResource(R.drawable.playbtn_xml);
+//                    currentMusicName.setText("岳云鹏相声");
+//                }
+//            }
+//        }, time);
+
+        if (time == 0) {
+            ToastUtils.showShortToast(MainActivity.this,"removeCallbacks");
+            mHandler.removeCallbacks(runnable);
+        } else {
+            ToastUtils.showShortToast(MainActivity.this,"new move");
+            mHandler.postDelayed(runnable, time);
+        }
     }
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isMediaPlaying) {
+                mediaPlayer.pause();
+                rotateFragment.stopRotate();
+                playbtn.setBackgroundResource(R.drawable.playbtn_xml);
+                currentMusicName.setText("岳云鹏相声");
+            }
+        }
+    };
 }
