@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/setting_title_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="35dp"
+        android:visibility="invisible"
+        android:layout_above="@+id/setting_btn_d"
+        android:background="#00000000"
+        android:text="@string/timersetting"
+        android:textSize="26sp" />
+
+    <View
+        android:id="@+id/divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:background="#00000000" />
+
+    <ImageView
+        android:id="@+id/setting_btn_a"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="invisible"
+        android:layout_below="@+id/divider_view"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/timer_30" />
+
+    <ImageView
+        android:id="@+id/setting_btn_b"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/setting_btn_a"
+        android:layout_marginLeft="35dp"
+        android:layout_toRightOf="@+id/setting_btn_a"
+        android:background="@drawable/timer_45" />
+
+
+    <ImageView
+        android:id="@+id/setting_btn_c"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/setting_btn_a"
+        android:layout_marginRight="35dp"
+        android:layout_toLeftOf="@+id/setting_btn_a"
+        android:background="@drawable/timer_15" />
+
+    <ImageView
+        android:id="@+id/setting_btn_d"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="invisible"
+        android:layout_above="@+id/divider_view"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/timer_90" />
+
+    <ImageView
+        android:id="@+id/setting_btn_e"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/setting_btn_d"
+        android:layout_marginLeft="35sp"
+        android:layout_toRightOf="@+id/setting_btn_d"
+        android:background="@drawable/timer_120" />
+
+
+    <ImageView
+        android:id="@+id/setting_btn_f"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/setting_btn_d"
+        android:layout_marginRight="35dp"
+        android:layout_toLeftOf="@+id/setting_btn_d"
+        android:src="@drawable/timer_60" />
+
+
+    <Button
+        android:id="@+id/setting_cancel_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:background="#00000000"
+        android:visibility="invisible"
+        android:layout_below="@+id/setting_btn_a"
+        android:text="@string/setting_cancel_tv"
+        android:textSize="26sp" />
+
+</RelativeLayout>

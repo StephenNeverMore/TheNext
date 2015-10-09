@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.stephen.thenext"
         minSdkVersion 11
-        targetSdkVersion 22
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -24,4 +24,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile files('libs/AppOffer_2.4.2.jar')
     compile files('libs/eventbus.jar')
+    compile files('libs/umeng-analytics-v5.5.3.jar')
+    compile files('libs/com.umeng.fb.5.4.0.jar')
+    compile files('libs/armeabi.jar')
+    compile files('libs/com.umeng.message.lib1.4.1.jar')
 }

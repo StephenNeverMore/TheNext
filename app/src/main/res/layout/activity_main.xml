@@ -29,9 +29,16 @@
 
         <TextView
             android:id="@+id/currentPlay"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:focusableInTouchMode="true"
             android:text="岳云鹏相声"
             android:textSize="22dp" />
 
@@ -58,18 +65,25 @@
     <RelativeLayout
         android:id="@+id/operator_rl"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
-        android:background="#777777">
+        android:background="#555555">
+
+        <View
+            android:id="@+id/dividerView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="#898989" />
 
         <Button
-            android:id="@+id/loopbtn"
-            android:visibility="invisible"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
+            android:id="@+id/sharebtn"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
             android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/loop" />
+            android:background="@drawable/sharebtn_xml" />
 
         <Button
             android:id="@+id/play_pause_btn"
@@ -110,9 +124,9 @@
     <LinearLayout
         android:id="@+id/seebar_ll"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="35dp"
         android:layout_above="@+id/operator_rl"
-        android:background="#777777"
+        android:background="#555555"
         android:orientation="horizontal">
 
         <TextView

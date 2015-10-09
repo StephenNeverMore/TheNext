@@ -27,15 +27,15 @@ import de.greenrobot.event.EventBus;
  */
 public class ListFragment extends Fragment {
 
-    private String TAG = "Stephen";
+    private static String TAG = "Stephen";
     private ListView listView;
     public List<String> playlists;
-    public static int currentPos = 14;
+    public static int currentPos = 0;
     public static final String CURRENTPOS = "CURRENTPOS";
     public static List<Bean> beanLists;
-    private int[] res = new int[]{R.raw.haojiubujian, R.raw.taixiangai, R.raw.youqingsuiyue};
-    private int[] names = new int[]{R.string.haojiubujian,R.string.taixiangai,R.string.youqingsuiyue};
-    private MyAdapter myAdapter;
+    public static int[] res = new int[]{R.raw.haojiubujian, R.raw.taixiangai, R.raw.youqingsuiyue};
+    private int[] names = new int[]{R.string.haojiubujian, R.string.taixiangai, R.string.youqingsuiyue};
+    private static MyAdapter myAdapter;
 
     @Nullable
     @Override
@@ -78,7 +78,7 @@ public class ListFragment extends Fragment {
                     return;
                 }
                 refreshCheckedItem(position);
-                EventBus.getDefault().post(new Bean(0, false, null));
+                EventBus.getDefault().post(new Bean(0, true, null));
             }
         });
     }
@@ -87,10 +87,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-
-        if (this.isHidden()) {
-            Log.d(TAG, "onHiddenChanged  is true");
-        } else {
+        if (!this.isHidden()) {
             startAnimations();
         }
     }
@@ -101,14 +98,16 @@ public class ListFragment extends Fragment {
     }
 
     public void refreshCheckedItem(int checked) {
-        if (checked > playlists.size() - 1) {
+        if (checked > res.length) {
             checked = 0;
         } else if (checked < 0) {
-            checked = playlists.size() - 1;
+            checked = res.length - 1;
         }
+//        Log.d(TAG, "refreshCheckedItem----------" + checked);
         beanLists.get(checked).setIsSelected(true);
         beanLists.get(currentPos).setIsSelected(false);
         currentPos = checked;
         myAdapter.notifyDataSetChanged();
+//        Log.d(TAG, "refreshCheckedItem----------" + currentPos);
     }
 }

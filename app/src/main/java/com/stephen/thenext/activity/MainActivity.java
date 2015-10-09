@@ -1,11 +1,16 @@
 package com.stephen.thenext.activity;
 
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -16,14 +21,25 @@ import com.stephen.thenext.R;
 import com.stephen.thenext.fragment.ListFragment;
 import com.stephen.thenext.fragment.RotateFragment;
 import com.stephen.thenext.polly.Bean;
+import com.stephen.thenext.utils.ToastUtils;
+import com.stephen.thenext.view.InfoDialog;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.fb.ConversationActivity;
+import com.umeng.fb.FeedbackAgent;
+import com.umeng.fb.fragment.FeedbackFragment;
+import com.umeng.message.PushAgent;
+
+import junit.framework.Test;
+
+import java.text.SimpleDateFormat;
 
 import cn.waps.AppConnect;
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends FragmentActivity implements
+        View.OnClickListener, SeekBar.OnSeekBarChangeListener, MediaPlayer.OnCompletionListener {
 
     private static final String TAG = "Stephen";
-    private static boolean isMediaPlaying = false;
 
     private Button settingbtn;
     private Button infobtn;
@@ -43,11 +59,36 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private static final String APP_PID = "default";
     private boolean isRotatoFragShowing = true;
 
+    private MediaPlayer mediaPlayer;
+    private boolean isMediaPlaying = false;
+    private int mediaCurPos;
+    private int mediaTotPos;
+    SimpleDateFormat format = new SimpleDateFormat("mm:ss");
+    private FeedbackAgent fb;
+
+    private InfoDialog dialog;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+            currentMusicDur.setText(format.format(mediaCurPos));
+            totalMusicDur.setText(format.format(mediaTotPos));
+            seekBar.setMax(mediaTotPos);
+            seekBar.setProgress(mediaCurPos);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //UM analytics
+        MobclickAgent.updateOnlineConfig(this);
+        //UM feedback
+        setUpUmengFeedback();
+        //WP ads
         AppConnect.getInstance(APP_ID, APP_PID, this);
         LinearLayout adlayout = (LinearLayout) findViewById(R.id.AdLinearLayout);
         AppConnect.getInstance(this).showBannerAd(this, adlayout);
@@ -62,19 +103,35 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         ListFragment.currentPos = preferences.getInt(ListFragment.CURRENTPOS, 0);
 
         EventBus.getDefault().register(this);
+        mediaPlayer = MediaPlayer.create(MainActivity.this, ListFragment.res[ListFragment.currentPos]);
+        //context decide the mediaplayer life
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setOnCompletionListener(this);
+        mHandler.post(mRunnable);//seekbar start to work;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         SharedPreferences sharedPreferences = this.getSharedPreferences("save", Context.MODE_PRIVATE);
         sharedPreferences.edit().putInt(ListFragment.CURRENTPOS, ListFragment.currentPos).apply();
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         AppConnect.getInstance(this).close();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
     }
 
 
@@ -95,7 +152,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         playbtn = (Button) findViewById(R.id.play_pause_btn);
         leftbtn = (Button) findViewById(R.id.left_btn);
         rightbtn = (Button) findViewById(R.id.right_btn);
-        loopbtn = (Button) findViewById(R.id.loopbtn);
+        loopbtn = (Button) findViewById(R.id.sharebtn);
         listbtn = (Button) findViewById(R.id.list_btn);
         currentMusicName = (TextView) findViewById(R.id.currentPlay);
         currentMusicDur = (TextView) findViewById(R.id.currentTime_tv);
@@ -120,41 +177,107 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 switchFragment();
                 break;
             case R.id.play_pause_btn:
-                updatePlay();
+                updatePlayBtn();
                 updateTitle();
                 break;
             case R.id.settingbtn:
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivityForResult(intent, 888);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
             case R.id.right_btn:
-                if (isMediaPlaying){
-                    listFragment.refreshCheckedItem(ListFragment.currentPos + 1);
-                }
+                playNextMusic();
                 updateTitle();
                 break;
             case R.id.left_btn:
-                if (isMediaPlaying){
-                    listFragment.refreshCheckedItem(ListFragment.currentPos - 1);
-                }
+                playPreviousMusic();
                 updateTitle();
+                break;
+            case R.id.infobtn:
+                showInfoDialog();
+                break;
+            case R.id.sharebtn:
+                ToastUtils.showShortToast(this, "Pertend to have done");
                 break;
             default:
                 break;
         }
     }
 
+    private void showInfoDialog() {
+        View view = getLayoutInflater().inflate(R.layout.infodialog_layout, null);
+        int dialogWidth = (int) (getWindowManager().getDefaultDisplay().getWidth() * 0.7);
+        int dialogHeight = (int) (getWindowManager().getDefaultDisplay().getHeight() * 0.3);
+        dialog = new InfoDialog(MainActivity.this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.positiveButton:
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, ConversationActivity.class);
+                        String id = new FeedbackAgent(MainActivity.this).getDefaultConversation().getId();
+                        intent.putExtra(FeedbackFragment.BUNDLE_KEY_CONVERSATION_ID, id);
+                        startActivity(intent);
+                        break;
+                    case R.id.negativeButton:
+                        dialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }, dialogWidth, dialogHeight, view, R.style.dialog);
+
+        dialog.show();
+    }
+
+    private void playPreviousMusic() {
+        if (isMediaPlaying) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            int index = ListFragment.currentPos - 1;
+            if (index < 0) {
+                index = ListFragment.res.length - 1;
+            }
+            listFragment.refreshCheckedItem(index);
+            mediaPlayer = MediaPlayer.create(MainActivity.this, ListFragment.res[ListFragment.currentPos]);
+            mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(this);
+        }
+    }
+
+    private void playNextMusic() {
+        if (isMediaPlaying) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            int index = ListFragment.currentPos + 1;
+            if (index > ListFragment.res.length - 1) {
+                index = 0;
+            }
+            listFragment.refreshCheckedItem(index);
+            mediaPlayer = MediaPlayer.create(MainActivity.this, ListFragment.res[ListFragment.currentPos]);
+            mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(this);
+        }
+
+    }
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+        if (fromUser) {
+            mediaPlayer.seekTo(progress);
+        }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-
+        mediaPlayer.pause();
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
+        mediaPlayer.start();
     }
 
     private void switchFragment() {
@@ -171,26 +294,92 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         isRotatoFragShowing = !isRotatoFragShowing;
     }
 
-    public void updateTitle() {
-//        currentMusicName.setText(ListFragment.beanLists.get(ListFragment.currentPos).getName());
-        currentMusicName.setText(listFragment.playlists.get(ListFragment.currentPos));
+    private void updateTitle() {
+        if (isMediaPlaying) {
+            currentMusicName.setText("正在播放：" + listFragment.playlists.get(ListFragment.currentPos));
+        } else {
+            currentMusicName.setText("岳云鹏相声");
+        }
     }
 
-    public void updatePlay() {
-        if (!isMediaPlaying) {
-            playbtn.setBackgroundResource(R.drawable.pausebtn_xml);
-            rotateFragment.startRotate();
-        } else {
-            playbtn.setBackgroundResource(R.drawable.playbtn_xml);
+    private void updatePlayBtn() {
+        if (isMediaPlaying) {
+            mediaPlayer.pause();
             rotateFragment.stopRotate();
+            playbtn.setBackgroundResource(R.drawable.playbtn_xml);
+        } else {
+            playbtn.setBackgroundResource(R.drawable.pausebtn_xml);
+            mediaPlayer.start();
+            rotateFragment.startRotate();
         }
         isMediaPlaying = !isMediaPlaying;
     }
 
     private void onEventMainThread(Bean bean) {
-        Log.d(TAG, "onEventMainThread");
-        isMediaPlaying = bean.isSelected();
-        updatePlay();
+        updateTitle();
+        playbtn.setBackgroundResource(R.drawable.pausebtn_xml);
+        rotateFragment.startRotate();
+        if (isMediaPlaying) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+        }
+        mediaPlayer = MediaPlayer.create(MainActivity.this, ListFragment.res[ListFragment.currentPos]);
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(this);
+    }
+
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        playNextMusic();
         updateTitle();
     }
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mediaCurPos = mediaPlayer.getCurrentPosition();
+            mediaTotPos = mediaPlayer.getDuration();
+            mHandler.sendMessage(mHandler.obtainMessage());
+            mHandler.postDelayed(mRunnable, 100);
+        }
+    };
+
+    private void setUpUmengFeedback() {
+        fb = new FeedbackAgent(this);
+        fb.sync();
+        fb.openAudioFeedback();
+        fb.openFeedbackPush();
+        PushAgent.getInstance(this).enable();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                fb.updateUserInfo();
+            }
+        }).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int time = data.getIntExtra("com.stephen.thenext.result", 0);
+        if (time == 0) {
+            mHandler.removeCallbacks(runnable);
+        } else {
+            mHandler.postDelayed(runnable, time);
+        }
+    }
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isMediaPlaying) {
+                mediaPlayer.pause();
+                rotateFragment.stopRotate();
+                playbtn.setBackgroundResource(R.drawable.playbtn_xml);
+                currentMusicName.setText("岳云鹏相声");
+                isMediaPlaying = !isMediaPlaying;
+            }
+        }
+    };
 }

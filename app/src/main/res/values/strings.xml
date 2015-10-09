@@ -13,5 +13,14 @@
     <string name="taixiangai">太想爱</string>
     <string name="haojiubujian">好久不见</string>
     <string name="action_settings">设置</string>
+    <string name="dialog_confirm_btn">好的，这就去</string>
+    <string name="dialog_cancel_btn">还是下次吧</string>
+    <string name="dialog_welcome_tv">TESTTESTTESTTESTTESTTESTTESTTEST</string>
+    <string name="setting_cancel_tv">取                消</string>
+    <string name="title_activity_setting">settingActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="timersetting">定时设置</string>
 
 </resources>
