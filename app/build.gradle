@@ -17,6 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    productFlavors {
+        xiaomi {}
+        _360 {}
+        baidu {}
+        wandoujia {}
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
 }
 
 dependencies {
@@ -28,4 +40,7 @@ dependencies {
     compile files('libs/com.umeng.fb.5.4.0.jar')
     compile files('libs/armeabi.jar')
     compile files('libs/com.umeng.message.lib1.4.1.jar')
+    compile files('libs/SocialSDK_QQZone_1.jar')
+    compile files('libs/SocialSDK_Sina.jar')
+    compile files('libs/httpmime-4.1.3.jar')
 }

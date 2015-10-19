@@ -8,6 +8,6 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/rotateimageview"/>
+        android:src="@drawable/yue1"/>
 
 </RelativeLayout>

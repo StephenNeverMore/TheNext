@@ -2,7 +2,6 @@ package com.stephen.thenext.fragment;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,8 +13,6 @@ import android.widget.ImageView;
 
 import com.stephen.thenext.R;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by ZS on 2015-08-22.
@@ -24,6 +21,7 @@ public class RotateFragment extends Fragment {
 
     private ImageView rotateBtn;
     private ObjectAnimator animator;
+    private boolean flag = true;
 
     @Nullable
     @Override
@@ -37,6 +35,18 @@ public class RotateFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         rotateBtn = (ImageView) getActivity().findViewById(R.id.rotatebtn);
+        rotateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (flag) {
+                    rotateBtn.setImageResource(R.drawable.yue2);
+                } else {
+                    rotateBtn.setImageResource(R.drawable.yue1);
+                }
+                flag = !flag;
+            }
+        });
         animator = ObjectAnimator.ofFloat(rotateBtn, "rotation", 0, 360);
         animator.setRepeatMode(ValueAnimator.RESTART);
         animator.setDuration(3600);
@@ -57,5 +67,6 @@ public class RotateFragment extends Fragment {
         }
         animator.cancel();
     }
+
 
 }
