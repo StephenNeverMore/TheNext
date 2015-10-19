@@ -28,6 +28,20 @@ import com.umeng.fb.ConversationActivity;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.fragment.FeedbackFragment;
 import com.umeng.message.PushAgent;
+import com.umeng.socialize.bean.RequestType;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.TencentWBSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 import junit.framework.Test;
 
@@ -39,7 +53,6 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends FragmentActivity implements
         View.OnClickListener, SeekBar.OnSeekBarChangeListener, MediaPlayer.OnCompletionListener {
 
-    private static final String TAG = "Stephen";
 
     private Button settingbtn;
     private Button infobtn;
@@ -57,6 +70,18 @@ public class MainActivity extends FragmentActivity implements
 
     private static final String APP_ID = "294ee87c3a15e377423307a747fe9476";
     private static final String APP_PID = "default";
+
+    //WX & CIRCLE
+    String wXappID = "wxac0158702adba3b5";
+    String wXappSecret = "e42a88e5b12b1b534a1e81d1c44937e4";
+
+    //QQ
+    String qQappId = "100424468";
+    String qQappSecret = "c7394704798a158208a74ab60104f0ba";
+    //Q-Zone
+    String qZoneId = "100424468";
+    String qZoneSecret = "c7394704798a158208a74ab60104f0ba";
+
     private boolean isRotatoFragShowing = true;
 
     private MediaPlayer mediaPlayer;
@@ -67,6 +92,8 @@ public class MainActivity extends FragmentActivity implements
     private FeedbackAgent fb;
 
     private InfoDialog dialog;
+
+    UMSocialService mController;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -108,6 +135,87 @@ public class MainActivity extends FragmentActivity implements
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setOnCompletionListener(this);
         mHandler.post(mRunnable);//seekbar start to work;
+
+        initShare();
+    }
+
+    private void initShare() {
+        // 首先在您的Activity中添加如下成员变量
+        mController = UMServiceFactory.getUMSocialService("com.umeng.share", RequestType.SOCIAL);
+        // 设置分享内容
+        mController.setShareContent("咦……你干啥切嘞？咋才来呢？");
+
+        // 设置分享图片, 参数2为图片的url地址
+//        mController.setShareMedia(new UMImage(MainActivity.this,
+//                "www.baidu.com"));
+        // 设置分享图片，参数2为本地图片的资源引用
+        //mController.setShareMedia(new UMImage(getActivity(), R.drawable.icon));
+        // 设置分享图片，参数2为本地图片的路径(绝对路径)
+        //mController.setShareMedia(new UMImage(getActivity(),
+        //BitmapFactory.decodeFile("/mnt/sdcard/icon.png")));
+
+        // 设置分享音乐
+        //UMusic uMusic = new UMusic("http://sns.whalecloud.com/test_music.mp3");
+        //uMusic.setAuthor("GuGu");
+        //uMusic.setTitle("天籁之音");
+        // 设置音乐缩略图
+        //uMusic.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
+        //mController.setShareMedia(uMusic);
+
+        // 设置分享视频
+        //UMVideo umVideo = new UMVideo(
+        //          "http://v.youku.com/v_show/id_XNTE5ODAwMDM2.html?f=19001023");
+        // 设置视频缩略图
+        //umVideo.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
+        //umVideo.setTitle("友盟社会化分享!");
+        //mController.setShareMedia(umVideo);
+
+        // 添加微信平台
+        UMWXHandler wxHandler = new UMWXHandler(MainActivity.this, wXappID, wXappSecret);
+        wxHandler.setTitle("this is a test!");
+        wxHandler.addToSocialSDK();
+
+        // 添加微信朋友圈
+        UMWXHandler wxCircleHandler = new UMWXHandler(MainActivity.this, wXappID, wXappSecret);
+        wxCircleHandler.setTitle("岳云鹏相声");
+        wxCircleHandler.setToCircle(true);
+        wxCircleHandler.addToSocialSDK();
+
+        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(MainActivity.this, qQappId,
+                qQappSecret);
+        qqSsoHandler.addToSocialSDK();
+        qqSsoHandler.setTitle("岳云鹏相声");
+
+        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(MainActivity.this, qZoneId,
+                qZoneSecret);
+        qZoneSsoHandler.addToSocialSDK();
+
+        //设置新浪SSO handler
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
+        //设置腾讯微博SSO handler
+        mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+
+
+        WeiXinShareContent weixinContent = new WeiXinShareContent();
+        weixinContent
+                .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-微信。http://www.umeng.com/social");
+        weixinContent.setTitle("岳云鹏相声");
+        mController.setShareMedia(weixinContent);
+
+        // 设置朋友圈分享的内容
+        CircleShareContent circleMedia = new CircleShareContent();
+        circleMedia
+                .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-朋友圈。http://www.umeng.com/social");
+        circleMedia.setTitle("岳云鹏相声");
+//        circleMedia.setShareMedia(urlImage);
+        // circleMedia.setShareMedia(uMusic);
+        // circleMedia.setShareMedia(video);
+//        circleMedia.setTargetUrl("http://www.umeng.com/social");
+//        mController.setShareMedia(circleMedia           );
+
     }
 
     @Override
@@ -132,6 +240,7 @@ public class MainActivity extends FragmentActivity implements
             mediaPlayer.stop();
             mediaPlayer.release();
         }
+        mController.getConfig().cleanListeners();
     }
 
 
@@ -197,7 +306,21 @@ public class MainActivity extends FragmentActivity implements
                 showInfoDialog();
                 break;
             case R.id.sharebtn:
-                ToastUtils.showShortToast(this, "Pertend to have done");
+
+                mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,
+                        SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.SINA, SHARE_MEDIA.TENCENT);
+//                mController.openShare(MainActivity.this, new SocializeListeners.SnsPostListener() {
+//                    @Override
+//                    public void onStart() {
+//                        ToastUtils.showShortToast(MainActivity.this, "onStart");
+//                    }
+//
+//                    @Override
+//                    public void onComplete(SHARE_MEDIA share_media, int i, SocializeEntity socializeEntity) {
+//                        ToastUtils.showShortToast(MainActivity.this, "onComplete");
+//                    }
+//                });
+                mController.openShare(MainActivity.this, false);
                 break;
             default:
                 break;

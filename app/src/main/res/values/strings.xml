@@ -1,26 +1,26 @@
 <resources>
-    <string name="app_name">岳云鹏相声</string>
 
-    <string name="yue">岳</string>
-    <string name="yun">云</string>
-    <string name="peng">鹏</string>
-    <string name="xiang">相</string>
-    <string name="sheng">声</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="yueyunpengxiangsheng">岳云鹏相声</string>
 
-    <string name="youqingsuiyue">友情岁月</string>
-    <string name="taixiangai">太想爱</string>
-    <string name="haojiubujian">好久不见</string>
-    <string name="action_settings">设置</string>
-    <string name="dialog_confirm_btn">好的，这就去</string>
-    <string name="dialog_cancel_btn">还是下次吧</string>
-    <string name="dialog_welcome_tv">TESTTESTTESTTESTTESTTESTTESTTEST</string>
-    <string name="setting_cancel_tv">取                消</string>
+    <string name="action_settings">Settings</string>
+    <string name="dialog_welcome_tv">Hey,What do think about this app?come and say something!</string>
     <string name="title_activity_setting">settingActivity</string>
     <string name="title_activity_test">TestActivity</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="timersetting">定时设置</string>
+    <string name="timersetting">Timer Settings</string>
+    <string name="app_name">Yueyunpeng Xiangsheng</string>
+    <string name="dialog_cancel_btn">Maybe Next Time</string>
+    <string name="dialog_confirm_btn">OK,Just Do It!</string>
+    <string name="haojiubujian">Long time no see</string>
+    <string name="taixiangai">Tai Xiang Ai</string>
+    <string name="sheng">Sheng</string>
+    <string name="setting_cancel_tv">Cancel</string>
+    <string name="peng">Peng</string>
+    <string name="xiang">Xiang</string>
+    <string name="youqingsuiyue">Youqingsuiyue</string>
+    <string name="yue">Yue</string>
+    <string name="yueyunpengxiangsheng">Yueyunpeng Xiangsheng</string>
+    <string name="yun">Yun</string>
 
 </resources>

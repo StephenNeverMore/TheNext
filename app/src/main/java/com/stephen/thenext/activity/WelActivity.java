@@ -19,7 +19,6 @@ public class WelActivity extends Activity {
 
     private int[] res = new int[]{R.id.peng_tv, R.id.yun_tv, R.id.xiang_tv, R.id.yue_tv, R.id.sheng_tv};
 
-    //    private RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +50,6 @@ public class WelActivity extends Activity {
     }
 
     private void intiViews() {
-//        relativeLayout = (RelativeLayout) findViewById(R.id.wel_layout);
         for (int i = 0; i < res.length; i++) {
             final TextView textView = (TextView) findViewById(res[i]);
             ObjectAnimator animator = ObjectAnimator.ofFloat(textView, "translationY", -2000, 0);

@@ -33,8 +33,11 @@ public class ListFragment extends Fragment {
     public static int currentPos = 0;
     public static final String CURRENTPOS = "CURRENTPOS";
     public static List<Bean> beanLists;
+
+    //same
     public static int[] res = new int[]{R.raw.haojiubujian, R.raw.taixiangai, R.raw.youqingsuiyue};
     private int[] names = new int[]{R.string.haojiubujian, R.string.taixiangai, R.string.youqingsuiyue};
+
     private static MyAdapter myAdapter;
 
     @Nullable
