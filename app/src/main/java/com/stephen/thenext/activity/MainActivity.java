@@ -72,8 +72,8 @@ public class MainActivity extends FragmentActivity implements
     private static final String APP_PID = "default";
 
     //WX & CIRCLE
-    String wXappID = "wxac0158702adba3b5";
-    String wXappSecret = "e42a88e5b12b1b534a1e81d1c44937e4";
+    String wXappID = "wx7615106e66b2f5fe";
+    String wXappSecret = "2e389c0ac8b4f4046319ad72e5a02df7";
     //QQ
     String qQappId = "100424468";
     String qQappSecret = "c7394704798a158208a74ab60104f0ba";
