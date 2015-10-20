@@ -72,8 +72,14 @@ public class MainActivity extends FragmentActivity implements
     private static final String APP_PID = "default";
 
     //WX & CIRCLE
+<<<<<<< HEAD
     String wXappID = "wx7615106e66b2f5fe";
     String wXappSecret = "2e389c0ac8b4f4046319ad72e5a02df7";
+=======
+    String wXappID = "wxac0158702adba3b5";
+    String wXappSecret = "e42a88e5b12b1b534a1e81d1c44937e4";
+
+>>>>>>> 682f331543a56f1efda647b7ee3bb94392c41a96
     //QQ
     String qQappId = "100424468";
     String qQappSecret = "c7394704798a158208a74ab60104f0ba";
@@ -142,7 +148,7 @@ public class MainActivity extends FragmentActivity implements
         // 首先在您的Activity中添加如下成员变量
         mController = UMServiceFactory.getUMSocialService("com.umeng.share", RequestType.SOCIAL);
         // 设置分享内容
-        mController.setShareContent("树上鸟儿成双对……");
+        mController.setShareContent("咦……你干啥切嘞？咋才来呢？");
 
         // 设置分享图片, 参数2为图片的url地址
 //        mController.setShareMedia(new UMImage(MainActivity.this,
@@ -176,44 +182,44 @@ public class MainActivity extends FragmentActivity implements
 
         // 添加微信朋友圈
         UMWXHandler wxCircleHandler = new UMWXHandler(MainActivity.this, wXappID, wXappSecret);
-        wxCircleHandler.setTitle("this is a test!");
+        wxCircleHandler.setTitle("岳云鹏相声");
         wxCircleHandler.setToCircle(true);
         wxCircleHandler.addToSocialSDK();
-//
-//        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
-//        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(MainActivity.this, qQappId,
-//                qQappSecret);
-//        qqSsoHandler.addToSocialSDK();
-//        qqSsoHandler.setTitle("this is a test!");
-//
-//        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
-//        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(MainActivity.this, qZoneId,
-//                qZoneSecret);
-//        qZoneSsoHandler.addToSocialSDK();
-//
-//        //设置新浪SSO handler
-//        mController.getConfig().setSsoHandler(new SinaSsoHandler());
-//
-//        //设置腾讯微博SSO handler
-//        mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+
+        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(MainActivity.this, qQappId,
+                qQappSecret);
+        qqSsoHandler.addToSocialSDK();
+        qqSsoHandler.setTitle("岳云鹏相声");
+
+        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(MainActivity.this, qZoneId,
+                qZoneSecret);
+        qZoneSsoHandler.addToSocialSDK();
+
+        //设置新浪SSO handler
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
+        //设置腾讯微博SSO handler
+        mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
 
 
         WeiXinShareContent weixinContent = new WeiXinShareContent();
         weixinContent
                 .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-微信。http://www.umeng.com/social");
-        weixinContent.setTitle("友盟社会化分享组件-微信");
+        weixinContent.setTitle("岳云鹏相声");
         mController.setShareMedia(weixinContent);
 
         // 设置朋友圈分享的内容
         CircleShareContent circleMedia = new CircleShareContent();
         circleMedia
                 .setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-朋友圈。http://www.umeng.com/social");
-        circleMedia.setTitle("友盟社会化分享组件-朋友圈");
+        circleMedia.setTitle("岳云鹏相声");
 //        circleMedia.setShareMedia(urlImage);
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
 //        circleMedia.setTargetUrl("http://www.umeng.com/social");
-//        mController.setShareMedia(circleMedia);
+//        mController.setShareMedia(circleMedia           );
 
     }
 
@@ -308,17 +314,18 @@ public class MainActivity extends FragmentActivity implements
 
                 mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE,
                         SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.SINA, SHARE_MEDIA.TENCENT);
-                mController.openShare(MainActivity.this, new SocializeListeners.SnsPostListener() {
-                    @Override
-                    public void onStart() {
-                        ToastUtils.showShortToast(MainActivity.this, "onStart");
-                    }
-
-                    @Override
-                    public void onComplete(SHARE_MEDIA share_media, int i, SocializeEntity socializeEntity) {
-                        ToastUtils.showShortToast(MainActivity.this, "onComplete");
-                    }
-                });
+//                mController.openShare(MainActivity.this, new SocializeListeners.SnsPostListener() {
+//                    @Override
+//                    public void onStart() {
+//                        ToastUtils.showShortToast(MainActivity.this, "onStart");
+//                    }
+//
+//                    @Override
+//                    public void onComplete(SHARE_MEDIA share_media, int i, SocializeEntity socializeEntity) {
+//                        ToastUtils.showShortToast(MainActivity.this, "onComplete");
+//                    }
+//                });
+                mController.openShare(MainActivity.this, false);
                 break;
             default:
                 break;
@@ -499,6 +506,7 @@ public class MainActivity extends FragmentActivity implements
                 rotateFragment.stopRotate();
                 playbtn.setBackgroundResource(R.drawable.playbtn_xml);
                 currentMusicName.setText("岳云鹏相声");
+                isMediaPlaying = !isMediaPlaying;
             }
         }
     };

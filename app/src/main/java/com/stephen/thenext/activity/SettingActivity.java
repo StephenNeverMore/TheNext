@@ -94,22 +94,22 @@ public class SettingActivity extends Activity implements View.OnClickListener {
             case R.id.setting_cancel_btn:
                 startAnimator(0);
                 break;
-            case R.id.setting_btn_a:
+            case R.id.setting_btn_c:
                 startAnimator(15);
                 break;
-            case R.id.setting_btn_b:
+            case R.id.setting_btn_a:
                 startAnimator(30);
                 break;
-            case R.id.setting_btn_c:
+            case R.id.setting_btn_b:
                 startAnimator(45);
                 break;
-            case R.id.setting_btn_d:
+            case R.id.setting_btn_f:
                 startAnimator(60);
                 break;
-            case R.id.setting_btn_e:
+            case R.id.setting_btn_d:
                 startAnimator(90);
                 break;
-            case R.id.setting_btn_f:
+            case R.id.setting_btn_e:
                 startAnimator(120);
                 break;
         }
@@ -131,8 +131,8 @@ public class SettingActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     Intent intent = new Intent();
-//                    intent.putExtra("com.stephen.thenext.result", result * 1000 * 60);
-                    intent.putExtra("com.stephen.thenext.result", result * 1000);
+                    intent.putExtra("com.stephen.thenext.result", result * 1000 * 60);
+//                    intent.putExtra("com.stephen.thenext.result", result * 1000);
                     setResult(888, intent);
                     finish();
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);

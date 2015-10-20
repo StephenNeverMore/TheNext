@@ -29,7 +29,7 @@
         android:visibility="invisible"
         android:layout_below="@+id/divider_view"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/timer" />
+        android:background="@drawable/timer_30" />
 
     <ImageView
         android:id="@+id/setting_btn_b"
@@ -39,7 +39,7 @@
         android:layout_alignTop="@+id/setting_btn_a"
         android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/setting_btn_a"
-        android:background="@drawable/timer" />
+        android:background="@drawable/timer_45" />
 
 
     <ImageView
@@ -50,7 +50,7 @@
         android:layout_alignTop="@+id/setting_btn_a"
         android:layout_marginRight="35dp"
         android:layout_toLeftOf="@+id/setting_btn_a"
-        android:background="@drawable/timer" />
+        android:background="@drawable/timer_15" />
 
     <ImageView
         android:id="@+id/setting_btn_d"
@@ -59,7 +59,7 @@
         android:visibility="invisible"
         android:layout_above="@+id/divider_view"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/timer" />
+        android:background="@drawable/timer_90" />
 
     <ImageView
         android:id="@+id/setting_btn_e"
@@ -69,7 +69,7 @@
         android:layout_alignTop="@+id/setting_btn_d"
         android:layout_marginLeft="35sp"
         android:layout_toRightOf="@+id/setting_btn_d"
-        android:background="@drawable/timer" />
+        android:background="@drawable/timer_120" />
 
 
     <ImageView
@@ -80,7 +80,7 @@
         android:layout_alignTop="@+id/setting_btn_d"
         android:layout_marginRight="35dp"
         android:layout_toLeftOf="@+id/setting_btn_d"
-        android:src="@drawable/timer" />
+        android:src="@drawable/timer_60" />
 
 
     <Button
