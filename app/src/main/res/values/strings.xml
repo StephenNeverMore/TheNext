@@ -3,7 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="action_settings">Settings</string>
-    <string name="dialog_welcome_tv">Hey,What do think about this app?come and say something!</string>
+    <string name="dialog_welcome_tv">Hey,How do think about this app?come and say something!</string>
     <string name="title_activity_setting">settingActivity</string>
     <string name="title_activity_test">TestActivity</string>
 

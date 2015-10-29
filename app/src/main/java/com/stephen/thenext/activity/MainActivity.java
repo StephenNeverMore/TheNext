@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -31,6 +32,8 @@ import com.umeng.socialize.bean.RequestType;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.SinaShareContent;
+import com.umeng.socialize.media.TencentWbShareContent;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.SinaSsoHandler;
@@ -82,7 +85,7 @@ public class MainActivity extends FragmentActivity implements
 
     private InfoDialog dialog;
 
-    UMSocialService mController;
+    UMSocialService mController = UMServiceFactory.getUMSocialService("岳云鹏相声", RequestType.SOCIAL);
 
     private Handler mHandler = new Handler() {
         @Override
@@ -124,85 +127,77 @@ public class MainActivity extends FragmentActivity implements
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setOnCompletionListener(this);
         mHandler.post(mRunnable);//seekbar start to work;
-
         initShare();
+        Log.d("Stephen","onCreate");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("Stephen","onStop");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Stephen", "onStart");
     }
 
     private void initShare() {
-        // 首先在您的Activity中添加如下成员变量
-        mController = UMServiceFactory.getUMSocialService("岳云鹏相声", RequestType.SOCIAL);
-        // 设置分享内容
-        mController.setShareContent("咦……你干啥切嘞？咋才来呢？");
-        // 设置分享图片, 参数2为图片的url地址
-//        mController.setShareMedia(new UMImage(MainActivity.this,
-//                "www.baidu.com"));
-        // 设置分享图片，参数2为本地图片的资源引用
-        mController.setShareMedia(new UMImage(MainActivity.this, R.drawable.ic_launcher));
-        // 设置分享图片，参数2为本地图片的路径(绝对路径)
-        //mController.setShareMedia(new UMImage(getActivity(),
-        //BitmapFactory.decodeFile("/mnt/sdcard/icon.png")));
 
-        // 设置分享音乐
-        //UMusic uMusic = new UMusic("http://sns.whalecloud.com/test_music.mp3");
-        //uMusic.setAuthor("GuGu");
-        //uMusic.setTitle("天籁之音");
-        // 设置音乐缩略图
-        //uMusic.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
-        //mController.setShareMedia(uMusic);
-
-        // 设置分享视频
-        //UMVideo umVideo = new UMVideo(
-        //          "http://v.youku.com/v_show/id_XNTE5ODAwMDM2.html?f=19001023");
-        // 设置视频缩略图
-        //umVideo.setThumb("http://www.umeng.com/images/pic/banner_module_social.png");
-        //umVideo.setTitle("友盟社会化分享!");
-        //mController.setShareMedia(umVideo);
-
+        // 添加新浪SSO授权
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+        // 添加腾讯微博SSO授权
+        mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
         // 添加微信平台
-        UMWXHandler wxHandler = new UMWXHandler(MainActivity.this, wXappID, wXappSecret);
-        wxHandler.setTitle("岳云鹏相声");
-        wxHandler.setTargetUrl("http://blog.csdn.net/zhushuang1201");
+        UMWXHandler wxHandler = new UMWXHandler(this, wXappID, wXappSecret);
         wxHandler.addToSocialSDK();
-
-        // 添加微信朋友圈
-        UMWXHandler wxCircleHandler = new UMWXHandler(MainActivity.this, wXappID, wXappSecret);
-        wxCircleHandler.setTitle("岳云鹏相声");
+        // 支持微信朋友圈
+        UMWXHandler wxCircleHandler = new UMWXHandler(this, wXappID, wXappSecret);
         wxCircleHandler.setToCircle(true);
-        wxCircleHandler.setTargetUrl("http://blog.csdn.net/zhushuang1201");
         wxCircleHandler.addToSocialSDK();
 
-//        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
-//        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(MainActivity.this, qQappId,
-//                qQappSecret);
-//        qqSsoHandler.addToSocialSDK();
-//        qqSsoHandler.setTitle("岳云鹏相声");
-//
-//        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
-//        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(MainActivity.this, qZoneId,
-//                qZoneSecret);
-//        qZoneSsoHandler.addToSocialSDK();
-
-        //设置新浪SSO handler
+        // 配置SSO
         mController.getConfig().setSsoHandler(new SinaSsoHandler());
-
-        //设置腾讯微博SSO handler
         mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
 
-
-//        WeiXinShareContent weixinContent = new WeiXinShareContent();
-//        weixinContent.setShareContent("http://blog.csdn.net/zhushuang1201");
-//        weixinContent.setTitle("岳云鹏相声");
-//        mController.setShareMedia(weixinContent);
+        // 设置微信分享的内容
+        WeiXinShareContent weixinContent = new WeiXinShareContent();
+        weixinContent
+                .setShareContent("咦……你干啥切嘞？咋才来呢？");
+        weixinContent.setTitle("岳云鹏相声");
+        weixinContent.setTargetUrl("http://blog.csdn.net/zhushuang1201");
+        //        weixinContent.setShareMedia(urlImage);
+        mController.setShareMedia(weixinContent);
 
         // 设置朋友圈分享的内容
-//        CircleShareContent circleMedia = new CircleShareContent();
-//        circleMedia.setShareContent("http://www.baidu.com");
-//        circleMedia.setTitle("岳云鹏相声");
-//        circleMedia.setShareMedia(urlImage);
+        CircleShareContent circleMedia = new CircleShareContent();
+        circleMedia
+                .setShareContent("咦……你干啥切嘞？咋才来呢？");
+        circleMedia.setTitle("岳云鹏相声");
+        circleMedia.setTargetUrl("http://blog.csdn.net/zhushuang1201");
+        // circleMedia.setShareMedia(urlImage);
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
-//        circleMedia.setTargetUrl("http://blog.csdn.net/zhushuang1201");
-//        mController.setShareMedia(circleMedia);
+        circleMedia.setTargetUrl("http://blog.csdn.net/zhushuang1201");
+        mController.setShareMedia(circleMedia);
+
+        // 设置新浪分享的内容
+        SinaShareContent sinaContent = new SinaShareContent();
+        sinaContent
+                .setShareContent("      咦……你干啥切嘞？咋才来呢？");
+        sinaContent.setShareImage(new UMImage(this, R.drawable.ic_launcher));
+        sinaContent.setTitle("岳云鹏相声");
+        sinaContent.setTargetUrl("http://blog.csdn.net/zhushuang1201");
+        mController.setShareMedia(sinaContent);
+
+        // 设置腾讯分享的内容
+        TencentWbShareContent tencent = new TencentWbShareContent();
+        tencent.setShareContent("咦……你干啥切嘞？咋才来呢？");
+        tencent.setTargetUrl("http://blog.csdn.net/zhushuang1201");
+        sinaContent.setTitle("岳云鹏相声");
+        tencent.setShareImage(new UMImage(this,R.drawable.ic_launcher));
+        mController.setShareMedia(tencent);
 
     }
 
@@ -210,6 +205,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        Log.d("Stephen","onResume");
     }
 
     @Override
@@ -218,6 +214,7 @@ public class MainActivity extends FragmentActivity implements
         sharedPreferences.edit().putInt(ListFragment.CURRENTPOS, ListFragment.currentPos).apply();
         super.onPause();
         MobclickAgent.onPause(this);
+        Log.d("Stephen", "onPause");
     }
 
     @Override
@@ -229,6 +226,7 @@ public class MainActivity extends FragmentActivity implements
             mediaPlayer.release();
         }
         mController.getConfig().cleanListeners();
+        Log.d("Stephen", "onDestroy");
     }
 
 
@@ -294,19 +292,7 @@ public class MainActivity extends FragmentActivity implements
                 showInfoDialog();
                 break;
             case R.id.sharebtn:
-
                 mController.getConfig().setPlatforms(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA, SHARE_MEDIA.TENCENT);
-//                mController.openShare(MainActivity.this, new SocializeListeners.SnsPostListener() {
-//                    @Override
-//                    public void onStart() {
-//                        ToastUtils.showShortToast(MainActivity.this, "onStart");
-//                    }
-//
-//                    @Override
-//                    public void onComplete(SHARE_MEDIA share_media, int i, SocializeEntity socializeEntity) {
-//                        ToastUtils.showShortToast(MainActivity.this, "onComplete");
-//                    }
-//                });
                 mController.openShare(MainActivity.this, false);
                 break;
             default:
@@ -394,11 +380,11 @@ public class MainActivity extends FragmentActivity implements
 
         if (isRotatoFragShowing) {
             getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_translate_in, R.anim.fragment_translate_out)
+//                    .setCustomAnimations(R.anim.fragment_translate_in, R.anim.fragment_translate_out)
                     .show(listFragment).hide(rotateFragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_translate_in, R.anim.fragment_translate_out)
+//                    .setCustomAnimations(R.anim.fragment_translate_in, R.anim.fragment_translate_out)
                     .show(rotateFragment).hide(listFragment).commit();
         }
         isRotatoFragShowing = !isRotatoFragShowing;

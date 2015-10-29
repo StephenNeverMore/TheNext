@@ -3,7 +3,6 @@ package com.stephen.thenext.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.stephen.thenext.R;
-import com.stephen.thenext.activity.MainActivity;
 import com.stephen.thenext.adpater.MyAdapter;
 import com.stephen.thenext.polly.Bean;
 
@@ -43,17 +41,8 @@ public class ListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.playlist_layout, container, false);
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        View view = inflater.inflate(R.layout.playlist_layout, container, false);
 
         playlists = new ArrayList<>();
         beanLists = new ArrayList<>();
@@ -70,7 +59,7 @@ public class ListFragment extends Fragment {
             beanLists.add(bean);
         }
 
-        listView = (ListView) getActivity().findViewById(R.id.list);
+        listView = (ListView) view.findViewById(R.id.list);
         listView.setDividerHeight(5);
         myAdapter = new MyAdapter(getActivity(), playlists);
         listView.setAdapter(myAdapter);
@@ -84,6 +73,18 @@ public class ListFragment extends Fragment {
                 EventBus.getDefault().post(new Bean(0, true, null));
             }
         });
+
+        return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
 

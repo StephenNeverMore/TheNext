@@ -28,13 +28,8 @@ public class RotateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.rotate_layout, container, false);
-        return view;
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        rotateBtn = (ImageView) getActivity().findViewById(R.id.rotatebtn);
+        rotateBtn = (ImageView) view.findViewById(R.id.rotatebtn);
         rotateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +47,13 @@ public class RotateFragment extends Fragment {
         animator.setDuration(3600);
         animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.setInterpolator(new LinearInterpolator());
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     public void startRotate() {

@@ -34,7 +34,7 @@ public class WelActivity extends Activity {
                 finish();
                 overridePendingTransition(R.anim.scale_in, R.anim.alpha_out);
             }
-        }, 2500);
+        }, 2200);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class WelActivity extends Activity {
         for (int i = 0; i < res.length; i++) {
             final TextView textView = (TextView) findViewById(res[i]);
             ObjectAnimator animator = ObjectAnimator.ofFloat(textView, "translationY", -2000, 0);
-            animator.setDuration(1600);
+            animator.setDuration(1000);
             animator.setStartDelay(60 * i);
             animator.setInterpolator(new AnticipateOvershootInterpolator());
             animator.addListener(new Animator.AnimatorListener() {
