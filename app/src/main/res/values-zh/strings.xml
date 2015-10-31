@@ -6,14 +6,11 @@
     <string name="dialog_confirm_btn">好的，这就去</string>
     <string name="dialog_welcome_tv">亲，
         你对这个APP有什么意见呢？快来说说吧！</string>
-    <string name="haojiubujian">好久不见</string>
     <string name="timersetting">定时设置</string>
-    <string name="taixiangai">太想爱</string>
     <string name="sheng">声</string>
     <string name="setting_cancel_tv">取                消</string>
     <string name="peng">鹏</string>
     <string name="xiang">相</string>
-    <string name="youqingsuiyue">友情岁月</string>
     <string name="yue">岳</string>
     <string name="yueyunpengxiangsheng">岳云鹏相声</string>
     <string name="yun">云</string>
@@ -23,4 +20,53 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="umeng_fb_questions_anwser">A:</string>
     <string name="umeng_fb_questions_question">Q:</string>
+    <string name="share_starting">正在启动分享，请稍候……</string>
+    <string name="share_successful">分享成功</string>
+    <string name="share_failed">分享失败</string>
+    <string name="press_again_exit">再按一次退出程序</string>
+
+    <!--playlists-->
+
+    <string name="badajixiang">八大吉祥</string>
+    <string name="baishezhuan">白蛇传</string>
+    <string name="chezaijiongtu">车在囧图</string>
+    <string name="dadengmi">打灯谜</string>
+    <string name="dashangshou">大上寿</string>
+    <string name="deyunhaoshengyin">德云好声音</string>
+    <string name="dilitu">地理图</string>
+    <string name="fanchang">返场</string>
+    <string name="guijulun">规矩轮</string>
+    <string name="guniangxiaohuobiezheyang">姑娘小伙别这样</string>
+    <string name="chaixixiang">拆西厢</string>
+    <string name="henanstyle">河南style</string>
+    <string name="jiebalun">结巴论</string>
+    <string name="jieriyouxi">节日游戏</string>
+    <string name="jinguitiejia">金龟铁甲</string>
+    <string name="jiusecaiqi">酒色财气</string>
+    <string name="laizibingfangdeni">来自病房的你</string>
+    <string name="loushanglouxia">楼上楼下</string>
+    <string name="maidiaopiao">卖吊票</string>
+    <string name="maiguyi">卖估衣</string>
+    <string name="manzhouhua">满洲话</string>
+    <string name="paidianyingguilai">拍电影归来</string>
+    <string name="qiedagu">怯大鼓</string>
+    <string name="quandebao">全德报</string>
+    <string name="shoujiangwei">收姜维</string>
+    <string name="shuangwawa">拴娃娃</string>
+    <string name="shumeiye">树没叶</string>
+    <string name="shuoxuedouchang">说学逗唱</string>
+    <string name="tiejiajiangjun">铁甲将军</string>
+    <string name="toulun">偷论</string>
+    <string name="waichangtaipinggece">歪唱太平歌词</string>
+    <string name="wodestyle">我的Style</string>
+    <string name="wuhuanzhige">五环之歌</string>
+    <string name="xiantuoqixianzi">新托妻献子</string>
+    <string name="xiaoyaokanshijie">小眼看世界</string>
+    <string name="xiechunlian">写春联</string>
+    <string name="xuegequ">学歌曲</string>
+    <string name="xuexiaoqu">学小曲</string>
+    <string name="xueyayu">学哑语</string>
+    <string name="zaocu">造厨</string>
+    <string name="zaxuechang">杂学唱</string>
+    <string name="zuogeyouqianren">做个有钱人</string>
 </resources>
